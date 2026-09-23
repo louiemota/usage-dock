@@ -224,7 +224,8 @@ extension ProviderUsage {
         ProviderUsage(id: "goat", name: "Command", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil),
         ProviderUsage(id: "cursor", name: "Cursor", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil),
         ProviderUsage(id: "grok", name: "Grok", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil),
-        ProviderUsage(id: "devin", name: "Devin", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil)
+        ProviderUsage(id: "devin", name: "Devin", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil),
+        ProviderUsage(id: "claude", name: "Claude", ok: false, usedPercent: nil, details: [], note: nil, plan: nil, error: nil, stale: false, sessions: nil)
     ]
 }
 

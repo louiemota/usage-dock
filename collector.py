@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Usage Dock collector — Codex, OpenCode Go, Command GOAT, Cursor, SuperGrok.
+"""Usage Dock collector — Codex, OpenCode Go, Command GOAT, Cursor, SuperGrok, Devin, Claude.
 
 Reads local credentials already on this Mac. Never prints tokens.
 OpenCode Go lê só ~/.local/share/opencode/auth.json — nunca o .env do Hermes.
@@ -38,6 +38,8 @@ COMMANDCODE_API = "https://api.commandcode.ai"
 OPENCODE_AUTH = os.path.expanduser("~/.local/share/opencode/auth.json")
 OPENCODE_USAGE_URL = "https://opencode.ai/zen/go/v1/usage"
 DEVIN_CREDS = os.path.expanduser("~/.local/share/devin/credentials.toml")
+CLAUDE_KEYCHAIN_SERVICE = "Claude Code-credentials"
+CLAUDE_USAGE_URL = "https://api.anthropic.com/api/oauth/usage"
 XAI_TOKEN_URL = "https://auth.x.ai/oauth2/token"
 XAI_CLIENT_ID = "b1a00492-073a-47ea-816f-4c329264a828"
 CODEX_BINARIES = [
@@ -1609,6 +1611,124 @@ def _safe_devin() -> dict:
         return row("devin", "Devin", error=str(e))
 
 
+def _claude_oauth() -> dict | None:
+    """OAuth do Claude Code no Keychain. Só leitura: o refresh é do próprio Claude Code."""
+    try:
+        out = subprocess.run(
+            ["security", "find-generic-password", "-s", CLAUDE_KEYCHAIN_SERVICE, "-w"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:
+        return None
+    if out.returncode != 0 or not out.stdout.strip():
+        return None
+    try:
+        entry = json.loads(out.stdout).get("claudeAiOauth")
+    except (ValueError, AttributeError):
+        return None
+    return entry if isinstance(entry, dict) and entry.get("accessToken") else None
+
+
+def claude_plan(subscription, tier) -> str | None:
+    """rateLimitTier traz o multiplicador do Max (default_claude_max_5x)."""
+    t = str(tier or "").lower()
+    for mult in ("20x", "5x"):
+        if f"max_{mult}" in t:
+            return f"Max {mult}"
+    return plan_chip(subscription)
+
+
+def fill_claude_row(cl: dict) -> dict:
+    """Monta o slot Claude a partir do /api/oauth/usage. Sem rede — testável."""
+    cl_row = row("claude", "Claude")
+    if not cl.get("ok"):
+        cl_row["error"] = cl.get("error") or "Claude indisponível"
+        return apply_unwatch({**cl_row, "skipWatch": bool(cl.get("skipWatch")), "stale": bool(cl.get("stale"))})
+    usage = cl.get("usage") if isinstance(cl.get("usage"), dict) else {}
+    details = []
+    pcts = []
+    for label, key, seconds in (
+        ("5 horas", "five_hour", 5 * 3600),
+        ("Semanal", "seven_day", 604800),
+        ("Semanal Opus", "seven_day_opus", 604800),
+        ("Semanal Sonnet", "seven_day_sonnet", 604800),
+    ):
+        win = usage.get(key)
+        if not isinstance(win, dict) or win.get("utilization") is None:
+            continue
+        try:
+            used = max(0.0, min(100.0, float(win["utilization"])))
+        except (TypeError, ValueError):
+            continue
+        pcts.append(used)
+        details.append(
+            {
+                "label": label,
+                "usedPercent": used,
+                "resetsAt": iso(win.get("resets_at")),
+                "windowSeconds": seconds,
+            }
+        )
+    if not details:
+        cl_row["error"] = "Claude sem janelas de uso"
+        return cl_row
+    cl_row.update(
+        ok=True,
+        usedPercent=max(pcts),
+        details=details,
+        plan=claude_plan(cl.get("subscription"), cl.get("tier")),
+        note="via Claude Code",
+    )
+    return cl_row
+
+
+def collect_claude() -> dict:
+    """Janelas de 5h e semanal do plano claude.ai — o mesmo endpoint do /usage do Claude Code."""
+    oauth = _claude_oauth()
+    if not oauth:
+        return {
+            "ok": False,
+            "error": "sem login Claude — rode `claude` e faça login",
+            "skipWatch": True,
+        }
+    try:
+        expired = float(oauth.get("expiresAt") or 0) / 1000 < time.time()
+    except (TypeError, ValueError):
+        expired = False
+    if expired:
+        return {"ok": False, "error": "token Claude expirado — abra o Claude Code", "stale": True}
+    status, body = http(
+        "GET",
+        CLAUDE_USAGE_URL,
+        {
+            "Authorization": f"Bearer {oauth['accessToken']}",
+            "anthropic-beta": "oauth-2025-04-20",
+            "Accept": "application/json",
+            "User-Agent": "claude-code/2.0",
+        },
+        timeout=10,
+    )
+    if status == 401:
+        return {"ok": False, "error": "token Claude recusado — abra o Claude Code", "stale": True}
+    if status != 200 or not isinstance(body, dict):
+        return {"ok": False, "error": f"Claude status HTTP {status}"}
+    return {
+        "ok": True,
+        "usage": body,
+        "subscription": oauth.get("subscriptionType"),
+        "tier": oauth.get("rateLimitTier"),
+    }
+
+
+def _safe_claude() -> dict:
+    try:
+        return fill_claude_row(collect_claude())
+    except Exception as e:
+        return row("claude", "Claude", error=str(e))
+
+
 def skipped_ids() -> set[str]:
     return {part.strip() for part in os.environ.get("USAGE_DOCK_SKIP", "").split(",") if part.strip()}
 
@@ -1631,9 +1751,9 @@ def apply_dead(payload: dict) -> dict:
 
 def main() -> None:
     skip = skipped_ids()
-    order = ("codex", "opencode", "goat", "cursor", "grok", "devin")
+    order = ("codex", "opencode", "goat", "cursor", "grok", "devin", "claude")
     jobs: dict[str, tuple] = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=7) as pool:
         if "codex" not in skip:
             jobs["codex"] = (
                 pool.submit(_safe_codex),
@@ -1669,6 +1789,12 @@ def main() -> None:
                 pool.submit(_safe_devin),
                 PROVIDER_FUTURE_TIMEOUT,
                 row("devin", "Devin", error="Devin demorou demais", stale=True),
+            )
+        if "claude" not in skip:
+            jobs["claude"] = (
+                pool.submit(_safe_claude),
+                PROVIDER_FUTURE_TIMEOUT,
+                row("claude", "Claude", error="Claude demorou demais", stale=True),
             )
         providers = []
         for pid in order:

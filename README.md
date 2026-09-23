@@ -1,8 +1,8 @@
 # Usage Dock
 
-HUD de cota na borda direita do macOS Sequoia (15). Cinco anéis — Codex, OpenCode Go, Command Code GOAT, Cursor, SuperGrok — soldados no bezel.
+HUD de cota na borda direita do macOS Sequoia (15). Até sete anéis (Codex, OpenCode Go, Command Code GOAT, Cursor, SuperGrok, Devin, Claude) soldados no bezel. Anel sem assinatura, cancelado ou com cota em 100% sai do dock e volta sozinho quando renova.
 
-A casca (pílula com scoop, peek em D-tab, hover com disco branco) é da mesma família do [Codenotch](https://github.com/vinzdg/codenotch) do Vinz ([@hivinz_](https://x.com/hivinz_)), agora MIT. Não é um clone: o Codenotch é macOS 26, quatro bordas, notch de hardware e “o agente ainda está trabalhando?”. Aqui o alvo é Sequoia, cinco anéis incluindo Command Code, e o dock **não** recolhe no clique do editor.
+A casca (pílula com scoop, peek em D-tab, hover com disco branco) é da mesma família do [Codenotch](https://github.com/vinzdg/codenotch) do Vinz ([@hivinz_](https://x.com/hivinz_)), agora MIT. Não é um clone: o Codenotch é macOS 26, quatro bordas, notch de hardware e “o agente ainda está trabalhando?”. Aqui o alvo é Sequoia, sete anéis incluindo Command Code e Claude, e o dock **não** recolhe no clique do editor.
 
 Ver `refs/SPEC.md` para o que está travado e `refs/CODENOTCH.md` para o que o binário mostrava antes do source.
 
@@ -15,6 +15,8 @@ Ver `refs/SPEC.md` para o que está travado e `refs/CODENOTCH.md` para o que o b
 | Command | `~/.commandcode/auth.json`, `GET /alpha/*` — o mesmo caminho do app Command Code |
 | Cursor | sessão do editor em `state.vscdb` |
 | Grok | pool SuperGrok via OAuth em `~/.grok/auth.json` |
+| Devin | API key do devin-cli em `~/.local/share/devin/credentials.toml` |
+| Claude | OAuth do Claude Code no Keychain (`Claude Code-credentials`), `GET /api/oauth/usage`. Só leitura, o refresh é do Claude Code |
 
 ## Build
 

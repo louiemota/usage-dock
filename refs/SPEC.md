@@ -1,6 +1,6 @@
-# Usage Dock. Spec travada 31/08/2026 (revisada 08/09, v40)
+# Usage Dock. Spec travada 31/08/2026 (revisada 08/09, v40; 23/09, 7 anéis)
 
-Isto é o alvo. Não é o hivinz pixel a pixel. É a mesma família, nos nossos 5 anéis, uma superfície só.
+Isto é o alvo. Não é o hivinz pixel a pixel. É a mesma família, nos nossos anéis (até 7: Codex, OpenCode, Command, Cursor, Grok, Devin, Claude), uma superfície só. Anel morto (sem assinatura, cancelado, cota 100%) sai do dock; a altura da pílula acompanha `providers.count`.
 
 Revisão 01/09: o texto abaixo foi alinhado ao que está aprovado no ar. Onde a versão de 31/08 se contradizia (vibrancy vs sólida, gap vs track cheia, % branca vs cor da banda, gear no poço vs na coluna), vale o que está escrito agora.
 
@@ -25,14 +25,14 @@ Não editar esses arquivos. Um diff visual contra eles mede família (forma, rit
 ## Estados que têm de existir
 
 1. Peek. D-tab ~14–16 pt de largura, ~46 pt de altura, no meio vertical da pílula expandida. Hover no peek abre. O desenho e o `hitTest` do `MovableRootView` têm de apontar para o mesmo lugar; o `morphingPill` vive num frame com a altura expandida e alinhamento `.center` para isso.
-2. Idle acoplado. Pílula com scoop em cima e embaixo. Cinco anéis + % abaixo de cada um. Track do anel visível em 0%. Logo branco no centro, sem quadrado preto, sem invert.
+2. Idle acoplado. Pílula com scoop em cima e embaixo. Um anel por provedor vivo (até 7) + % abaixo de cada um. Track do anel visível em 0%. Logo branco no centro, sem quadrado preto, sem invert.
 3. Hover no anel. Card à esquerda, caret no anel, fade+slide curto. Chip de plano se existir. Reset à direita. Barra. `N% usado`. Cifra em linha própria se vier no collector.
 4. Clique no anel pina o card. Esc ou clique fora fecha o card. O dock **não** recolhe no clique do editor.
 5. Gear. Ícone ~22 pt no fim da coluna, dentro do corpo preenchido da pílula, **antes** do scoop inferior, com um arco côncavo (`GearArc`) acima separando da coluna de anéis. Sem % e sem anel de cota. Clique abre o modal de ajustes. Não é um sexto anel e não é overlay fora da `CoupledShell` (isso faz a gear flutuar no vazio e cobrir o % do Grok). O "poço circular" de 31/08 foi testado e descartado.
 6. 100%. Anel vermelho `#FF3B4E`, mais grosso, pulso. Texto da % no mesmo vermelho.
 7. Recolher. Menu contextual, Ajustes, ou Esc com o card já fechado **e o ponteiro sobre o dock**. Esc no editor fecha card/ajustes, mas não recolhe. Não é clique no desktop.
 
-## Tokens (família hivinz, escala 5 anéis)
+## Tokens (família hivinz, escala até 7 anéis)
 
 - Largura da pílula 62–68 pt.
 - Ícone/anel 42–44 pt.
@@ -48,7 +48,7 @@ Valores atuais (v38): pílula 66, scoop 20, anel 44, linha 62, spacing 12, top p
 
 ## O que o hivinz faz e a gente não copia
 
-- Três anéis. Nós temos cinco.
+- Três anéis. Nós temos até sete.
 - Liquid Glass do macOS 26. Aqui é vibrancy do 15.
 - Clique no desktop recolhe. Aqui some o HUD no meio do Cursor. Recolher é explícito.
 - Lista de processos do Claude. Só renderizamos `sessions` se o collector mandar.

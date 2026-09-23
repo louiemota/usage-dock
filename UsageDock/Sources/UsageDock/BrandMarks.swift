@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 enum BrandID: String {
-    case codex, opencode, goat, cursor, grok, devin
+    case codex, opencode, goat, cursor, grok, devin, claude
 }
 
 enum BrandTone {
@@ -36,6 +36,8 @@ struct BrandMark: View {
                 BundledSVGMark(name: "xai", tone: tone)
             case .devin:
                 BundledSVGMark(name: "devin", tone: tone)
+            case .claude:
+                BundledSVGMark(name: "claude", tone: tone)
             case .none:
                 Circle()
                     .fill(tone.color)
@@ -50,7 +52,7 @@ struct BrandMark: View {
         switch BrandID(rawValue: id) {
         case .opencode, .grok: return 1.08
         case .goat, .devin: return 1.02
-        case .codex, .cursor, .none: return 1
+        case .codex, .cursor, .claude, .none: return 1
         }
     }
 }

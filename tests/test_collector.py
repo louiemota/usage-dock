@@ -521,6 +521,53 @@ class DevinRowTests(unittest.TestCase):
         self.assertTrue(row["skipWatch"])
 
 
+class ClaudeRowTests(unittest.TestCase):
+    def test_five_hour_and_weekly_windows(self):
+        row = c.fill_claude_row(
+            {
+                "ok": True,
+                "subscription": "max",
+                "tier": "default_claude_max_5x",
+                "usage": {
+                    "five_hour": {"utilization": 12.0, "resets_at": "2026-09-24T04:30:00.380661+00:00"},
+                    "seven_day": {"utilization": 41.0, "resets_at": "2026-09-26T07:00:00+00:00"},
+                    "seven_day_opus": None,
+                },
+            }
+        )
+        self.assertTrue(row["ok"])
+        self.assertEqual(row["plan"], "Max 5x")
+        self.assertEqual(row["usedPercent"], 41)
+        self.assertEqual([d["label"] for d in row["details"]], ["5 horas", "Semanal"])
+        self.assertEqual(row["details"][0]["windowSeconds"], 18000)
+        self.assertIsNotNone(row["details"][0]["resetsAt"])
+
+    def test_pro_plan_chip(self):
+        self.assertEqual(c.claude_plan("pro", "default_claude_ai"), "Pro")
+        self.assertEqual(c.claude_plan("max", "default_claude_max_20x"), "Max 20x")
+
+    def test_weekly_at_limit_leaves_the_dock(self):
+        row = c.fill_claude_row(
+            {"ok": True, "subscription": "max", "usage": {"seven_day": {"utilization": 100.0}}}
+        )
+        dead = c.apply_dead(row)
+        self.assertTrue(dead["skipWatch"])
+        self.assertIn("esgotada", dead["error"])
+
+    def test_missing_login_unwatches(self):
+        with mock.patch.object(c, "_claude_oauth", return_value=None):
+            row = c.fill_claude_row(c.collect_claude())
+        self.assertTrue(row["skipWatch"])
+
+    def test_expired_token_stays_in_the_queue(self):
+        oauth = {"accessToken": "x", "expiresAt": (time.time() - 60) * 1000}
+        with mock.patch.object(c, "_claude_oauth", return_value=oauth), mock.patch.object(c, "http") as http:
+            row = c.fill_claude_row(c.collect_claude())
+        http.assert_not_called()
+        self.assertFalse(row["skipWatch"])
+        self.assertTrue(row["stale"])
+
+
 class DeadSubscriptionTests(unittest.TestCase):
     def test_exhausted_ring_leaves_the_dock(self):
         dead = c.apply_dead(c.row("goat", "Command", ok=True, usedPercent=100))
