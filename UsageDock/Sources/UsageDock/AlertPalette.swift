@@ -31,11 +31,27 @@ enum UsageBand: String {
 }
 
 enum DockTheme {
-    static let shell = Color(red: 0.043, green: 0.047, blue: 0.063)       // #0B0C10
-    static let shellLift = Color(red: 0.086, green: 0.094, blue: 0.122)   // #16181F
-    static let text = Color(red: 0.95, green: 0.96, blue: 0.97)
-    static let muted = Color(red: 0.62, green: 0.63, blue: 0.68)
-    static let track = Color(red: 0.22, green: 0.23, blue: 0.27)
-    static let barTrack = Color.white.opacity(0.07)
-    static let glassTint = Color.black.opacity(0.30)
+    /// Codenotch `Palette.notch` / `Palette.card` — preto, não carvão e não leite.
+    static let shell = Color.black
+    static let text = Color.white
+    static let muted = Color(red: 0.502, green: 0.502, blue: 0.502)       // #808080
+    static let track = Color(red: 0.188, green: 0.188, blue: 0.188)       // #303030
+    static let barTrack = Color(red: 0.176, green: 0.176, blue: 0.176)    // #2D2D2D
+    static let hairline = Color.white.opacity(0.14)
+}
+
+/// Uma superfície só para pílula, popout e ajustes. Preto do Codenotch.
+/// Material do Sequoia no card era o cinza leite; a casca não acompanha isso.
+struct DockSurface<S: Shape>: View {
+    var shape: S
+    var stroke: Bool = true
+
+    var body: some View {
+        ZStack {
+            shape.fill(DockTheme.shell)
+            if stroke {
+                shape.stroke(DockTheme.hairline, lineWidth: 1)
+            }
+        }
+    }
 }

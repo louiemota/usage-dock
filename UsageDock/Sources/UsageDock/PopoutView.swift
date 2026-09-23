@@ -35,6 +35,10 @@ struct PopoutView: View {
                 }
             }
 
+            if let profile = provider.profile {
+                CodexUsageSection(profile: profile)
+            }
+
             if let sessions = provider.sessions, !sessions.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(sessions) { session in
@@ -60,21 +64,15 @@ struct PopoutView: View {
         .padding(.vertical, 10)
         .frame(width: DockLayout.popoutWidth, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 13, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .fill(DockTheme.glassTint)
-                }
-                .shadow(color: .black.opacity(0.45), radius: 18, y: 8)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 13, style: .continuous)
-                .stroke(Color.white.opacity(0.14), lineWidth: 1)
+            DockSurface(
+                shape: RoundedRectangle(cornerRadius: 13, style: .continuous),
+                stroke: true
+            )
+            .shadow(color: .black.opacity(0.45), radius: 18, y: 8)
         )
         .overlay(alignment: .topTrailing) {
             PopoutCaret()
-                .fill(DockTheme.shell.opacity(0.92))
+                .fill(Color.black.opacity(0.88))
                 .frame(width: 16, height: 24)
                 .offset(x: 10, y: caretY - 12)
         }
@@ -130,10 +128,11 @@ private struct DetailRow: View {
 
             if detail.usedPercent != nil {
                 QuietUsageBar(percent: detail.percent, color: band.ring)
-                Text("\(Int(detail.percent.rounded()))% usado")
+                usageSummary()
                     .font(.system(size: 10, weight: .semibold, design: .rounded))
                     .monospacedDigit()
-                    .foregroundStyle(band.ring)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                     .contentTransition(settle ? .numericText() : .identity)
                     .transaction { $0.animation = settle ? .easeOut(duration: 0.55) : nil }
             } else if let caption = detail.caption, !caption.isEmpty {
@@ -155,6 +154,152 @@ private struct DetailRow: View {
                 settle = true
             }
         }
+    }
+
+    @ViewBuilder
+    private func usageSummary() -> some View {
+        let halves = Percent.halves(for: detail.percent / 100)
+        let pace = usagePace(now: Date())
+        let base = Text("\(halves.used)% usado · \(halves.left)% restante")
+            .foregroundColor(DockTheme.text)
+        if let pace {
+            base + Text(" · \(pace.summary)")
+                .foregroundColor(pace.isDeficit ? UsageBand.hot.ring : DockTheme.muted)
+        } else {
+            base
+        }
+    }
+
+    private func usagePace(now: Date) -> UsagePace? {
+        guard let seconds = detail.windowSeconds,
+              let raw = detail.resetsAt,
+              let reset = ResetCopy.parse(raw) else { return nil }
+        return UsagePace.from(
+            usedPercent: detail.percent,
+            windowSeconds: seconds,
+            resetsAt: reset,
+            now: now
+        )
+    }
+}
+
+private struct CodexUsageSection: View {
+    let profile: CodexProfileUsage
+
+    private var bars: [Int] {
+        let values = profile.daily
+        if values.count >= 30 { return Array(values.suffix(30)) }
+        return Array(repeating: 0, count: 30 - values.count) + values
+    }
+
+    private var maximum: Int { max(1, bars.max() ?? 0) }
+
+    private var todayText: String {
+        if let today = profile.todayTokens {
+            return UsageFormat.tokens(today)
+        }
+        return "Pendente"
+    }
+
+    private var metrics: [(id: String, label: String, value: String)] {
+        [
+            ("lifetime", "Tokens vitalícios", UsageFormat.tokens(profile.lifetimeTokens)),
+            ("peak", "Pico diário", UsageFormat.tokens(profile.peakDailyTokens)),
+            ("longest", "Chat mais longo", UsageFormat.duration(seconds: profile.longestChatSeconds)),
+            ("current-streak", "Sequência atual", UsageFormat.days(profile.currentStreakDays)),
+            ("longest-streak", "Maior sequência", UsageFormat.days(profile.longestStreakDays))
+        ]
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Rectangle()
+                .fill(DockTheme.hairline)
+                .frame(height: 1)
+                .padding(.top, 8)
+
+            VStack(alignment: .leading, spacing: 3) {
+                ForEach(metrics, id: \.id) { metric in
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text(metric.label)
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundStyle(DockTheme.text)
+                            .lineLimit(1)
+                        Spacer(minLength: 6)
+                        Text(metric.value)
+                            .font(.system(size: 10, weight: .medium, design: .rounded))
+                            .foregroundStyle(DockTheme.muted)
+                            .monospacedDigit()
+                            .lineLimit(1)
+                    }
+                }
+            }
+            .padding(.top, 8)
+            .padding(.bottom, 8)
+
+            Rectangle()
+                .fill(DockTheme.hairline)
+                .frame(height: 1)
+
+            HStack {
+                Text("Hoje")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(DockTheme.text)
+                Spacer(minLength: 6)
+                Text(todayText)
+                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                    .foregroundStyle(DockTheme.muted)
+                    .monospacedDigit()
+            }
+            .padding(.top, 8)
+
+            HStack {
+                Text("Tokens 30 dias")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(DockTheme.text)
+                Spacer(minLength: 6)
+                Text(UsageFormat.tokens(profile.thirtyDayTokens))
+                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                    .foregroundStyle(DockTheme.muted)
+                    .monospacedDigit()
+            }
+            .padding(.top, 4)
+
+            CodexDailyChart(values: bars, maximum: maximum)
+                .padding(.top, 6)
+        }
+    }
+}
+
+private struct CodexDailyChart: View {
+    let values: [Int]
+    let maximum: Int
+
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .bottomLeading) {
+                Rectangle()
+                    .fill(DockTheme.track)
+                    .frame(height: 1)
+
+                HStack(alignment: .bottom, spacing: 2) {
+                    ForEach(Array(values.enumerated()), id: \.offset) { _, tokens in
+                        RoundedRectangle(cornerRadius: 1.5, style: .continuous)
+                            .fill(DockTheme.muted)
+                            .frame(maxWidth: .infinity)
+                            .frame(
+                                height: max(
+                                    tokens > 0 ? 2 : 0,
+                                    proxy.size.height * CGFloat(tokens) / CGFloat(maximum)
+                                )
+                            )
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            }
+        }
+        .frame(height: 52)
+        .clipped()
     }
 }
 

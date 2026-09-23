@@ -32,9 +32,11 @@ struct SettingsModal: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             if let updated = store.lastUpdated {
-                Text("Atualizado \(updated.formatted(date: .omitted, time: .shortened))")
+                Text(store.providers.contains(where: \.isAged)
+                     ? "Leitura antiga — último ok \(updated.formatted(date: .omitted, time: .shortened))"
+                     : "Atualizado \(updated.formatted(date: .omitted, time: .shortened))")
                     .font(.system(size: 11))
-                    .foregroundStyle(DockTheme.muted)
+                    .foregroundStyle(store.providers.contains(where: \.isAged) ? UsageBand.hot.ring : DockTheme.muted)
             }
             if let error = store.lastError, !error.isEmpty {
                 Text(error)
@@ -43,8 +45,41 @@ struct SettingsModal: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
+            if !store.parked.isEmpty {
+                Text("Fora da fila")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(DockTheme.muted)
+                ForEach(store.parked) { item in
+                    HStack(alignment: .top, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(item.name)
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(DockTheme.text)
+                            Text(item.reason)
+                                .font(.system(size: 10))
+                                .foregroundStyle(DockTheme.muted)
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        Spacer(minLength: 6)
+                        Button("Vigiar") {
+                            store.restoreWatch(item.id)
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(DockTheme.text)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .fill(Color.white.opacity(0.08))
+                        )
+                    }
+                }
+            }
+
             VStack(spacing: 6) {
-                modalButton(store.isLoading ? "Atualizando…" : "Atualizar", disabled: store.isLoading) {
+                modalButton(store.isLoading ? "Atualizando…" : "Atualizar") {
                     Task { await store.refresh() }
                 }
                 modalButton("Recolher") {
@@ -63,17 +98,11 @@ struct SettingsModal: View {
         .padding(.vertical, 14)
         .frame(width: DockLayout.popoutWidth, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(DockTheme.shell.opacity(0.9))
-                }
-                .shadow(color: .black.opacity(0.42), radius: 16, y: 7)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(Color.white.opacity(0.09), lineWidth: 1)
+            DockSurface(
+                shape: RoundedRectangle(cornerRadius: 13, style: .continuous),
+                stroke: true
+            )
+            .shadow(color: .black.opacity(0.42), radius: 16, y: 7)
         )
     }
 

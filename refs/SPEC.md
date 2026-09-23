@@ -1,6 +1,6 @@
-# Usage Dock. Spec travada 31/08/2026 (revisada 01/09, v38)
+# Usage Dock. Spec travada 31/08/2026 (revisada 08/09, v40)
 
-Isto é o alvo. Não é o hivinz pixel a pixel. É a mesma família, nos nossos 5 anéis, casca sólida.
+Isto é o alvo. Não é o hivinz pixel a pixel. É a mesma família, nos nossos 5 anéis, uma superfície só.
 
 Revisão 01/09: o texto abaixo foi alinhado ao que está aprovado no ar. Onde a versão de 31/08 se contradizia (vibrancy vs sólida, gap vs track cheia, % branca vs cor da banda, gear no poço vs na coluna), vale o que está escrito agora.
 
@@ -17,7 +17,7 @@ Não editar esses arquivos. Um diff visual contra eles mede família (forma, rit
 
 ## O que o nosso dock é
 
-- Casca sólida `DockTheme.shell` quando acoplada. Vibrancy (`.ultraThinMaterial` + tint) só nos cards (popout e ajustes). Não é Liquid Glass do macOS 26.
+- Uma superfície só: pílula, popout e ajustes no preto do Codenotch. Sem material leite no card e casca carvão no anel.
 - Anel com track cheia (sem gap das 6h). O hivinz tem gap; a gente não copia.
 - Hover: disco branco + logo escuro, scale curto.
 - % branca no idle. 100% vermelho, na % também.

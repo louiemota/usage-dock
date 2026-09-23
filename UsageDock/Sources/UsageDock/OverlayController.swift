@@ -23,6 +23,7 @@ final class OverlayController {
     private enum Defaults {
         static let maxX = "usageDock.anchorMaxX"
         static let maxY = "usageDock.anchorMaxY"
+        static let coupled = "usageDock.coupledTrailing"
     }
 
     init(store: UsageStore) {
@@ -113,6 +114,21 @@ final class OverlayController {
             Task { @MainActor in self?.syncLayoutIfNeeded(force: true) }
         }
 
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.syncLayoutIfNeeded(force: true) }
+        }
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.screensDidWakeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.syncLayoutIfNeeded(force: true) }
+        }
+
         NotificationCenter.default.addObserver(
             forName: NSWindow.didMoveNotification,
             object: panel,
@@ -121,11 +137,14 @@ final class OverlayController {
             Task { @MainActor in self?.captureAnchorFromWindow() }
         }
 
-        store.coupledTrailing = true
-        anchorMaxX = visibleFrame().maxX
-        persistAnchor()
+        store.coupledTrailing = restoredCoupling(visible: visibleFrame())
+        if store.coupledTrailing {
+            anchorMaxX = visibleFrame().maxX
+        }
         syncLayoutIfNeeded(force: true)
-        snapIfNearTrailingEdge()
+        if store.coupledTrailing {
+            snapIfNearTrailingEdge()
+        }
         installDismissMonitors()
         installDragMonitors()
         panel.orderFrontRegardless()
@@ -329,9 +348,19 @@ final class OverlayController {
         )
     }
 
+    private func restoredCoupling(visible: NSRect) -> Bool {
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: Defaults.coupled) != nil {
+            return defaults.bool(forKey: Defaults.coupled)
+        }
+        return visible.maxX - anchorMaxX <= DockLayout.snapDistance
+    }
+
     private func persistAnchor() {
         UserDefaults.standard.set(Double(anchorMaxX), forKey: Defaults.maxX)
         UserDefaults.standard.set(Double(anchorMaxY), forKey: Defaults.maxY)
+        UserDefaults.standard.set(store.coupledTrailing, forKey: Defaults.coupled)
+        UserDefaults.standard.synchronize()
     }
 
     private func syncLayoutIfNeeded(force: Bool = false) {

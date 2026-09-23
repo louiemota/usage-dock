@@ -75,6 +75,8 @@ struct DockView: View {
         .onChange(of: store.lastUpdated) { _, _ in onLayout() }
         .onChange(of: store.coupledTrailing) { _, _ in onLayout() }
         .onChange(of: store.settingsOpen) { _, _ in onLayout() }
+        .onChange(of: store.providers.count) { _, _ in onLayout() }
+        .onChange(of: store.parked.count) { _, _ in onLayout() }
         .onAppear { onLayout() }
     }
 
@@ -82,15 +84,9 @@ struct DockView: View {
         ZStack(alignment: .top) {
             Group {
                 if layout.coupled {
-                    CoupledShell(scoop: scoop)
-                        .fill(DockTheme.shell)
+                    DockSurface(shape: CoupledShell(scoop: scoop), stroke: false)
                 } else {
-                    Capsule(style: .continuous)
-                        .fill(DockTheme.shell)
-                        .overlay {
-                            Capsule(style: .continuous)
-                                .stroke(Color.white.opacity(0.10), lineWidth: 1)
-                        }
+                    DockSurface(shape: Capsule(style: .continuous), stroke: true)
                 }
             }
             .shadow(
@@ -182,7 +178,6 @@ struct DockView: View {
         Button(store.isLoading ? "Atualizando…" : "Atualizar") {
             Task { await store.refresh() }
         }
-        .disabled(store.isLoading)
         Button(store.collapsed ? "Expandir" : "Recolher") {
             store.setCollapsed(!store.collapsed)
         }
@@ -208,6 +203,11 @@ struct RingButton: View {
     private var critical: Bool { provider.ok && band == .critical }
     private var exhausted: Bool { provider.ok && provider.ringPercent >= 99.5 }
     private var ringWidth: CGFloat { exhausted ? 3.8 : 3.2 }
+    /// Codenotch 1.15: leitura velha esmaece; o número continua o último bom.
+    private var ringOpacity: Double {
+        if !provider.ok { return 0.5 }
+        return provider.isAged ? 0.45 : 1
+    }
 
     private var ringProgress: CGFloat {
         CGFloat(provider.ringPercent / 100)
@@ -224,7 +224,7 @@ struct RingButton: View {
                 }
                 .scaleEffect(active ? 1.04 : 1)
                 .animation(.easeOut(duration: 0.16), value: active)
-                .opacity(provider.ok ? 1 : 0.5)
+                .opacity(ringOpacity)
 
                 Text(provider.ok ? "\(Int(provider.ringPercent.rounded()))%" : "—")
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
@@ -245,9 +245,15 @@ struct RingButton: View {
             self.hovering = hovering
             onHoverChange(hovering)
         }
-        .help(provider.ok ? provider.name : (provider.error ?? provider.name))
+        .help(ringHelp)
         .accessibilityAddTraits(selected ? .isSelected : [])
         .accessibilityLabel(provider.name)
+    }
+
+    private var ringHelp: String {
+        if provider.isAged { return "\(provider.name) · leitura antiga" }
+        if provider.ok { return provider.name }
+        return provider.error ?? provider.name
     }
 
     private var ringGraphic: some View {

@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 enum BrandID: String {
-    case codex, opencode, goat, cursor, grok
+    case codex, opencode, goat, cursor, grok, devin
 }
 
 enum BrandTone {
@@ -34,6 +34,8 @@ struct BrandMark: View {
                 BundledSVGMark(name: "cursor-mark", tone: tone)
             case .grok:
                 BundledSVGMark(name: "xai", tone: tone)
+            case .devin:
+                BundledSVGMark(name: "devin", tone: tone)
             case .none:
                 Circle()
                     .fill(tone.color)
@@ -47,7 +49,7 @@ struct BrandMark: View {
     private var opticalScale: CGFloat {
         switch BrandID(rawValue: id) {
         case .opencode, .grok: return 1.08
-        case .goat: return 1.02
+        case .goat, .devin: return 1.02
         case .codex, .cursor, .none: return 1
         }
     }

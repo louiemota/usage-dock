@@ -11,7 +11,7 @@ Ver `refs/SPEC.md` para o que está travado e `refs/CODENOTCH.md` para o que o b
 | Anel | Fonte |
 |---|---|
 | Codex | CLI ao vivo, senão histórico do Codex Limits |
-| OpenCode | Go plan (`OPENCODE_GO_API_KEY` ou `~/.local/share/opencode/auth.json`) |
+| OpenCode | Go plan (`~/.local/share/opencode/auth.json` — login no OpenCode; não usa o .env do Hermes) |
 | Command | `~/.commandcode/auth.json`, `GET /alpha/*` — o mesmo caminho do app Command Code |
 | Cursor | sessão do editor em `state.vscdb` |
 | Grok | pool SuperGrok via OAuth em `~/.grok/auth.json` |
@@ -19,8 +19,10 @@ Ver `refs/SPEC.md` para o que está travado e `refs/CODENOTCH.md` para o que o b
 ## Build
 
 ```sh
-USAGE_DOCK_OUTPUT=/Users/imac/Documents/usage-dock/UsageDock.app scripts/build.sh
-pkill -x UsageDock; open UsageDock.app
+scripts/build.sh
+pkill -x UsageDock; open /Users/imac/Applications/UsageDock.app
 ```
 
-O coletor é `collector.py`, chamado a cada 30s pelo app.
+O live é `/Users/imac/Applications/UsageDock.app` — fora do File Provider. O login abre essa cópia. `Documents/usage-dock/UsageDock.app` é só checkout; depois de reboot o iCloud às vezes devolvia uma build velha.
+
+O coletor é `collector.py`. O app pede números a cada 60s com o HUD em uso e a cada 5 min idle (Codenotch 1.13); acordar da máquina força um refresh. Sem login ou assinatura, o anel sai sozinho da fila (Ajustes → Vigiar para voltar). A última leitura boa fica em `~/Library/Application Support/UsageDock/`, então o reboot não zera os anéis.
