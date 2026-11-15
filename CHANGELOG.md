@@ -10,6 +10,7 @@ Usage Dock has no tagged release and no published binary. The sections below fol
 
 - Documentation for users, contributors, and AI agents: `README.md` in English, `README.pt-BR.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `THIRD_PARTY_NOTICES.md`, `AGENTS.md`, `llms.txt`, `docs/ARCHITECTURE.md`, `docs/ADDING-A-PROVIDER.md`, `docs/KNOWN-LIMITATIONS.md`, and this changelog.
 - Issue forms for bug reports and feature requests, and a pull request template.
+- The MIT License, in `LICENSE`.
 
 ### Changed
 

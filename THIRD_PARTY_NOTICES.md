@@ -1,6 +1,6 @@
 # Third-party notices
 
-Usage Dock contains code that derives from another project, and it displays the logos of other companies. This file records both.
+Usage Dock is under the MIT License, in [LICENSE](LICENSE). This file records the material in the repository that comes from other people: code that derives from another project, the logos of other companies, and reference media.
 
 ## Codenotch
 
@@ -55,6 +55,10 @@ The app displays the logos of the providers that it reads.
 | `UsageDock/Sources/UsageDock/Resources/opencode.svg` | OpenCode |
 | `UsageDock/Sources/UsageDock/Resources/xai.svg` | xAI, used for the Grok ring |
 
-The names and the logos are trademarks of their owners. Usage Dock uses them only to identify each provider, and it is not affiliated with or endorsed by any of them.
+The names and the logos are trademarks of their owners. Usage Dock uses them only to identify each provider, and it is not affiliated with or endorsed by any of them. The MIT License of Usage Dock does not cover the names or the logos.
 
 The repository does not record where each logo file came from. A comment in `LogoAssets.swift` states that `xai.svg` is CC0. That statement was not checked against a source.
+
+## Reference media
+
+The folder `refs/` holds a video and images taken from a public post by the author of Codenotch. The project keeps them as a design reference. They belong to their author, and the MIT License of Usage Dock does not cover them.

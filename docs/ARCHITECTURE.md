@@ -28,7 +28,8 @@ The split has two effects. The tests exercise the provider logic without the app
 ├── CODE_OF_CONDUCT.md           Contributor Covenant 2.1
 ├── SECURITY.md                  How to report a vulnerability
 ├── CHANGELOG.md                 Notable changes
-├── THIRD_PARTY_NOTICES.md       The Codenotch MIT notice and the logo notice
+├── LICENSE                      The MIT License
+├── THIRD_PARTY_NOTICES.md       Notices for Codenotch, the logos, and the reference media
 ├── collector.py                 The collector. One file, standard library only
 ├── tests/test_collector.py      47 tests for the collector. No network, no real credentials
 ├── scripts/build.sh             Builds, assembles, signs, and installs UsageDock.app

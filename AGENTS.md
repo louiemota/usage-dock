@@ -11,7 +11,7 @@ Usage Dock is a macOS overlay that shows how much of each AI coding subscription
 
 The provider ids are `codex`, `opencode`, `goat`, `cursor`, `grok`, `devin`, and `claude`. The id `goat` is Command Code.
 
-The project is a personal tool in preparation for open source. It has no license, no release, and no CI.
+The project is a personal tool in preparation for open source, under the MIT License. It has no release and no CI.
 
 ## Where things are
 
@@ -98,7 +98,7 @@ These rules come from `refs/SPEC.md` and from comments in the code.
 
 ## Do not
 
-- Do not create a `LICENSE` file or add license headers. The maintainer has not chosen a license.
+- Do not change `LICENSE`, and do not add license headers to source files. The project is under the MIT License, and `THIRD_PARTY_NOTICES.md` records the material that the license does not cover.
 - Do not fix a known limitation as a side effect of another change. Several items in `docs/KNOWN-LIMITATIONS.md` need a product decision from the maintainer.
 - Do not commit an edit of the four path constants that points to the current machine.
 - Do not commit a screenshot that shows anything except the dock. Git ignores `refs/baseline/` for that reason.

@@ -7,7 +7,7 @@ Usage Dock is a macOS overlay that shows how much of each AI coding subscription
 Usage Dock has no account and no server. A Python collector reads the logins that each provider's own tool already keeps on your Mac, and asks that provider's API for your usage. A SwiftUI app draws the answer.
 
 > [!WARNING]
-> Usage Dock is a personal tool that is being prepared for open source. It runs every day on the author's Mac, but it does not run on another machine until you edit four path constants. It has no prebuilt app and no license yet. Read [Known limitations](#known-limitations) before you build it.
+> Usage Dock is a personal tool that is being prepared for open source. It runs every day on the author's Mac, but it does not run on another machine until you edit four path constants. It has no prebuilt app yet. Read [Known limitations](#known-limitations) before you build it.
 
 Leia este documento em [português do Brasil](README.pt-BR.md).
 
@@ -212,7 +212,6 @@ No item has a date. The maintainer decides the order.
 
 | Item | Status |
 |---|---|
-| Choose a license | Pending decision |
 | Remove the machine-specific paths and ship the collector inside the app bundle | Proposed |
 | Fix the readings that can mislead, limitations 1 to 7 and 13 | Proposed, waiting for triage |
 | Run the collector tests in CI | Proposed |
@@ -237,4 +236,6 @@ The MIT notice for Codenotch is in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.
 
 ## License
 
-Pending. The maintainer has not chosen a license, and the repository has no `LICENSE` file. Until a license is added, nobody has permission to copy, change, or distribute this code. The Codenotch notice in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) applies to the two files that derive from Codenotch.
+Usage Dock is released under the [MIT License](LICENSE).
+
+The license covers the code and the documentation of this project. Third-party material in the repository keeps its own terms. [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) holds the MIT notice of Codenotch and the notices about the provider logos and the reference media.

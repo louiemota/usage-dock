@@ -6,8 +6,8 @@ Everyone who takes part follows the [code of conduct](CODE_OF_CONDUCT.md). To re
 
 ## Know the status first
 
-- The project has no license yet. The maintainer has not set the terms for outside contributions. Open an issue before you write a large change.
-- The project has one maintainer and no release schedule.
+- Usage Dock is under the [MIT License](LICENSE). A contribution that you send to this repository is licensed under the same terms.
+- The project has one maintainer and no release schedule. Open an issue before you write a large change.
 - Many defects are already known. Read [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) before you report one.
 
 Issues and pull requests are welcome in English or in Portuguese.

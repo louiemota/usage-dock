@@ -7,7 +7,7 @@ O Usage Dock é uma sobreposição para macOS que mostra quanto você já usou d
 O Usage Dock não tem conta nem servidor. Um coletor em Python lê os logins que a ferramenta de cada provedor já guarda no seu Mac e pergunta o uso à API desse provedor. Um app em SwiftUI desenha a resposta.
 
 > [!WARNING]
-> O Usage Dock é uma ferramenta pessoal em preparação para virar código aberto. Ele roda todo dia no Mac do autor, mas só roda em outra máquina depois que você troca quatro constantes de caminho. Ainda não há app pronto para baixar nem licença. Leia [Limitações conhecidas](#limitações-conhecidas) antes de compilar.
+> O Usage Dock é uma ferramenta pessoal em preparação para virar código aberto. Ele roda todo dia no Mac do autor, mas só roda em outra máquina depois que você troca quatro constantes de caminho. Ainda não há app pronto para baixar. Leia [Limitações conhecidas](#limitações-conhecidas) antes de compilar.
 
 Read this document in [English](README.md).
 
@@ -198,7 +198,6 @@ Nenhum item tem data. O mantenedor decide a ordem.
 
 | Item | Situação |
 |---|---|
-| Escolher a licença | Decisão pendente |
 | Tirar os caminhos da máquina do autor e levar o coletor para dentro do pacote do app | Proposto |
 | Consertar as leituras que enganam, limitações 1 a 7 e 13 | Proposto, aguardando triagem |
 | Rodar os testes do coletor em CI | Proposto |
@@ -223,4 +222,6 @@ O aviso MIT do Codenotch está em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.m
 
 ## Licença
 
-Pendente. O mantenedor ainda não escolheu a licença, e o repositório não tem arquivo `LICENSE`. Até a licença entrar, ninguém tem permissão para copiar, alterar ou distribuir este código. O aviso do Codenotch em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) vale para os dois arquivos derivados do Codenotch.
+O Usage Dock é distribuído sob a [licença MIT](LICENSE).
+
+A licença cobre o código e a documentação deste projeto. O material de terceiros no repositório segue os termos dos seus donos. O [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) traz o aviso MIT do Codenotch e os avisos sobre os logos dos provedores e a mídia de referência.
