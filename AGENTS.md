@@ -29,7 +29,6 @@ The project is a personal tool, open source under the MIT License. It has no rel
 | `docs/ARCHITECTURE.md` | How a round works, the JSON contract, timing, and state |
 | `docs/ADDING-A-PROVIDER.md` | The steps to add a ring |
 | `docs/KNOWN-LIMITATIONS.md` | The defects that are already known, numbered |
-| `refs/SPEC.md` | The design specification of the dock, in Portuguese |
 
 ## Commands
 
@@ -83,18 +82,17 @@ Text:
 
 - Interface strings and collector messages are in Brazilian Portuguese. The project has no localization layer. Write a new string in the language of the strings around it.
 - Do not use em dashes in interface text or in documents.
-- Documents are in English, except `README.pt-BR.md` and the files in `refs/`.
+- Documents are in English, except `README.pt-BR.md`.
 
 ## Behavior that must not change by accident
 
-These rules come from `refs/SPEC.md` and from comments in the code.
+These rules come from the design decisions of the project and from comments in the code.
 
 - A click outside the dock closes the open card. It must not collapse the dock. `dismissIfClickOutside` never calls `setCollapsed(true)`.
 - Esc pressed in another app closes cards. It collapses the dock only when the pointer is over the dock.
 - The panel keeps its expanded size while the dock is collapsed. A smaller panel clips the animation.
 - The gear is not a ring. It has no percentage and no quota arc.
-- Do not add the four-edge transform or the hardware-notch merge of Codenotch to `SideNotchShape` unless the maintainer asks. A comment in `CoupledShell.swift` records that those changes alter the approved shape.
-- Keep the attribution to Codenotch in `CoupledShell.swift`, in `UsagePace.swift`, and in `THIRD_PARTY_NOTICES.md`.
+- Do not add other screen edges or a merge with the hardware notch to `SideNotchShape` unless the maintainer asks. A comment in `CoupledShell.swift` records that those changes alter the approved shape.
 
 ## Do not
 

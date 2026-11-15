@@ -175,7 +175,7 @@ def _add_months(moment: dt.datetime, months: int) -> dt.datetime:
 
 
 def _month_seconds_before(end) -> float | None:
-    """Janela mensal do OpenCode: um mês civil UTC terminando no reset. Igual ao Codenotch."""
+    """Janela mensal do OpenCode: um mês civil UTC terminando no reset."""
     end_at = _parse_iso_dt(end)
     if end_at is None:
         return None
@@ -254,7 +254,7 @@ def apply_unwatch(payload: dict) -> dict:
 
 
 def _opencode_go_token(auth_path: str | None = None) -> str | None:
-    """Codenotch 1.12: só o auth.json do OpenCode. Env do Hermes era chave morta (403)."""
+    """Só o auth.json do OpenCode. Env do Hermes era chave morta (403)."""
     try:
         with open(auth_path or OPENCODE_AUTH, encoding="utf-8") as fh:
             root = json.load(fh)
@@ -652,7 +652,7 @@ def _jwt_expired(token: str, now: float | None = None) -> bool:
 
 
 def _codex_auth_credential(auth_path: str | None = None, now: float | None = None) -> tuple[str, str] | None:
-    """Lê ~/.codex/auth.json no mesmo shape do Codenotch. Nunca imprime o token."""
+    """Lê ~/.codex/auth.json. Nunca imprime o token."""
     try:
         with open(auth_path or CODEX_AUTH, encoding="utf-8") as fh:
             root = json.load(fh)

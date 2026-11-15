@@ -31,7 +31,7 @@ enum UsageBand: String {
 }
 
 enum DockTheme {
-    /// Codenotch `Palette.notch` / `Palette.card` — preto, não carvão e não leite.
+    /// Preto, não carvão e não leite.
     static let shell = Color.black
     static let text = Color.white
     static let muted = Color(red: 0.502, green: 0.502, blue: 0.502)       // #808080
@@ -40,7 +40,7 @@ enum DockTheme {
     static let hairline = Color.white.opacity(0.14)
 }
 
-/// Uma superfície só para pílula, popout e ajustes. Preto do Codenotch.
+/// Uma superfície só para pílula, popout e ajustes, em preto.
 /// Material do Sequoia no card era o cinza leite; a casca não acompanha isso.
 struct DockSurface<S: Shape>: View {
     var shape: S

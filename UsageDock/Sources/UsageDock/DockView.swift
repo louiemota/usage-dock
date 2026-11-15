@@ -203,7 +203,7 @@ struct RingButton: View {
     private var critical: Bool { provider.ok && band == .critical }
     private var exhausted: Bool { provider.ok && provider.ringPercent >= 99.5 }
     private var ringWidth: CGFloat { exhausted ? 3.8 : 3.2 }
-    /// Codenotch 1.15: leitura velha esmaece; o número continua o último bom.
+    /// Leitura velha esmaece; o número continua o último bom.
     private var ringOpacity: Double {
         if !provider.ok { return 0.5 }
         return provider.isAged ? 0.45 : 1

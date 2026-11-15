@@ -88,8 +88,7 @@ Rules for the collector, `collector.py`:
 Rules for the app, `UsageDock/Sources/UsageDock`:
 
 - The interface strings are in Brazilian Portuguese, and the project has no localization layer. Write a new string in the same language as the strings around it. Do not use em dashes in interface text.
-- Keep the attribution comments in `CoupledShell.swift` and `UsagePace.swift`.
-- `refs/SPEC.md` is the design specification of the dock, in Portuguese. Its last two sections list the changes that the project forbids and the mistakes that broke the dock before. Read them before you change the layout or the event handling.
+- Before you change the layout or the event handling, read the section "Behavior that must not change by accident" of [AGENTS.md](AGENTS.md).
 
 ## Check your change
 

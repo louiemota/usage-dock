@@ -42,7 +42,7 @@ Each item names the file and the symbol where the behavior lives. The numbered i
 16. **Esc and clicks misbehave in the transparent part of the window.** The window is 318 points wide and the pill is 66 points wide. `OverlayController.handleEscape` and `OverlayController.dismissIfClickOutside` test the pointer against the whole window. With the pointer in the transparent 252 points and no card open, Esc collapses the dock. A click in the same area does not close an open card.
 17. **`Ajustes do sistema…` opens a window that is almost empty.** The SwiftUI `Settings` scene in `UsageDockApp.swift` contains only the color legend.
 18. **A long reason is cut to two lines.** In the list `Fora da fila` of `SettingsModal`, a long message loses its end, which is where the instruction is.
-19. **The pace text has no explanation.** A card can read `7.8% déficit` with no legend. The number uses a decimal point in a Portuguese interface (`UsagePace.summary`).
+19. **The pace text has no explanation.** A card can read `7.8% déficit` with no legend. The number uses a decimal point in a Portuguese interface (`WindowPace.caption`).
 20. **The rule that removes a ring depends on pieces of text.** `UNWATCH_HINTS` in `collector.py` and `ProviderUsage.shouldPark` in `Models.swift` hold the same list of substrings. Any error that mentions `auth.json` removes the ring, even when the failure is temporary.
 
 ## Polish and accessibility
@@ -53,7 +53,7 @@ Each item names the file and the symbol where the behavior lives. The numbered i
 24. **The dock stays above every window.** `OverlayController.show` puts the panel at the status bar level, on every Space, and over full-screen apps. The dock shows over full-screen video and on shared screens. Expanded, it covers 66 points of the right edge, where scroll bars are.
 25. **The first position assumes five rings.** `OverlayController.init` computes the first vertical position for five rings. With another number of rings, a new install does not start centered.
 26. **The dock can shake when you drag it away from the edge.** `OverlayController.drag` switches the shape of the dock on every pointer move near the edge. A user reported the shake in September 2026. It was not tested again.
-27. **The collector does not read the newer OpenCode login store.** `_opencode_go_token` reads only `auth.json`. The README of Codenotch for Windows states that OpenCode 1.18 and later also keeps the login in `opencode.db`. This statement was not checked against the OpenCode documentation.
+27. **The collector does not read the newer OpenCode login store.** `_opencode_go_token` reads only `auth.json`. Newer OpenCode versions also have a login store in `opencode.db`. The author's machine has that file, with a `credential` table. This behavior was not checked against the OpenCode documentation.
 
 ## Limits of scope
 

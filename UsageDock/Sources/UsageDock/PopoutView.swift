@@ -158,28 +158,23 @@ private struct DetailRow: View {
 
     @ViewBuilder
     private func usageSummary() -> some View {
-        let halves = Percent.halves(for: detail.percent / 100)
-        let pace = usagePace(now: Date())
-        let base = Text("\(halves.used)% usado · \(halves.left)% restante")
+        let share = PercentText.usedAndLeft(fraction: detail.percent / 100)
+        let pace = windowPace(now: Date())
+        let base = Text("\(share.used)% usado · \(share.left)% restante")
             .foregroundColor(DockTheme.text)
         if let pace {
-            base + Text(" · \(pace.summary)")
-                .foregroundColor(pace.isDeficit ? UsageBand.hot.ring : DockTheme.muted)
+            base + Text(" · \(pace.caption)")
+                .foregroundColor(pace.isAhead ? UsageBand.hot.ring : DockTheme.muted)
         } else {
             base
         }
     }
 
-    private func usagePace(now: Date) -> UsagePace? {
+    private func windowPace(now: Date) -> WindowPace? {
         guard let seconds = detail.windowSeconds,
               let raw = detail.resetsAt,
               let reset = ResetCopy.parse(raw) else { return nil }
-        return UsagePace.from(
-            usedPercent: detail.percent,
-            windowSeconds: seconds,
-            resetsAt: reset,
-            now: now
-        )
+        return WindowPace(usedPercent: detail.percent, windowSeconds: seconds, resetsAt: reset, now: now)
     }
 }
 
@@ -196,18 +191,18 @@ private struct CodexUsageSection: View {
 
     private var todayText: String {
         if let today = profile.todayTokens {
-            return UsageFormat.tokens(today)
+            return CompactValue.tokens(today)
         }
         return "Pendente"
     }
 
     private var metrics: [(id: String, label: String, value: String)] {
         [
-            ("lifetime", "Tokens vitalícios", UsageFormat.tokens(profile.lifetimeTokens)),
-            ("peak", "Pico diário", UsageFormat.tokens(profile.peakDailyTokens)),
-            ("longest", "Chat mais longo", UsageFormat.duration(seconds: profile.longestChatSeconds)),
-            ("current-streak", "Sequência atual", UsageFormat.days(profile.currentStreakDays)),
-            ("longest-streak", "Maior sequência", UsageFormat.days(profile.longestStreakDays))
+            ("lifetime", "Tokens vitalícios", CompactValue.tokens(profile.lifetimeTokens)),
+            ("peak", "Pico diário", CompactValue.tokens(profile.peakDailyTokens)),
+            ("longest", "Chat mais longo", CompactValue.timeSpan(seconds: profile.longestChatSeconds)),
+            ("current-streak", "Sequência atual", CompactValue.days(profile.currentStreakDays)),
+            ("longest-streak", "Maior sequência", CompactValue.days(profile.longestStreakDays))
         ]
     }
 
@@ -258,7 +253,7 @@ private struct CodexUsageSection: View {
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(DockTheme.text)
                 Spacer(minLength: 6)
-                Text(UsageFormat.tokens(profile.thirtyDayTokens))
+                Text(CompactValue.tokens(profile.thirtyDayTokens))
                     .font(.system(size: 10, weight: .medium, design: .rounded))
                     .foregroundStyle(DockTheme.muted)
                     .monospacedDigit()

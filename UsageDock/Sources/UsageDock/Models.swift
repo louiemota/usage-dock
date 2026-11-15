@@ -93,7 +93,7 @@ struct DockLayout: Equatable {
         return height
     }
 
-    /// Bloco Codenotch 1.7 compactado na nossa largura 240: métricas, hoje/30d, histograma.
+    /// Bloco de estatísticas do Codex na largura 240: métricas, hoje/30d, histograma.
     static let codexProfileBlock: CGFloat = 188
 
     @MainActor

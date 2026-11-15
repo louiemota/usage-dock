@@ -223,18 +223,12 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before you open an issue or a pull reque
 
 Coding agents start with [AGENTS.md](AGENTS.md). Language models that need a short map of the project start with [llms.txt](llms.txt). The design is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), and the steps to add a provider are in [docs/ADDING-A-PROVIDER.md](docs/ADDING-A-PROVIDER.md).
 
-## Credits
+## Trademarks
 
-Usage Dock belongs to the same visual family as [Codenotch](https://github.com/vinzdg/codenotch), by Vinz ([hivinz_ on X](https://x.com/hivinz_)). Codenotch is MIT licensed.
-
-- `UsageDock/Sources/UsageDock/CoupledShell.swift` draws the pill that is welded to the screen edge. Its shape comes from Codenotch's `SideNotchShape`.
-- `UsageDock/Sources/UsageDock/UsagePace.swift` is a port of Codenotch's `UsagePace`.
-- Several behaviors follow Codenotch releases, as the code comments record: the refresh cadence, keeping the last good reading, the hover delays, and removing a provider that has no login.
-
-The MIT notice for Codenotch is in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The provider names and logos belong to their owners.
+The provider names and logos belong to their owners. Usage Dock uses them only to identify each provider. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## License
 
 Usage Dock is released under the [MIT License](LICENSE).
 
-The license covers the code and the documentation of this project. Third-party material in the repository keeps its own terms. [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) holds the MIT notice of Codenotch and the notice about the provider logos.
+The license covers the code and the documentation of this project. Third-party material in the repository keeps its own terms. [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) holds the notice about the provider logos.

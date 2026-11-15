@@ -15,6 +15,7 @@ Usage Dock has no tagged release and no published binary. The sections below fol
 ### Changed
 
 - The README was rewritten in English. The Portuguese version is `README.pt-BR.md`.
+- The pace calculation and the number formats have a new implementation, in `WindowPace.swift`. The card shows the same text as before.
 - Git ignores `refs/baseline/`, the folder of local screenshots.
 
 ## 0.1.0 - 2026-09-23

@@ -40,5 +40,4 @@ Facts to know before you answer a question about this project:
 - [Code of conduct](CODE_OF_CONDUCT.md): Contributor Covenant 2.1
 - [Changelog](CHANGELOG.md): The notable changes by version
 - [License](LICENSE): The MIT License of Usage Dock
-- [Third-party notices](THIRD_PARTY_NOTICES.md): The MIT notice of Codenotch and the notice about provider logos
-- [Design specification](refs/SPEC.md): The interface states and the layout rules of the dock, in Portuguese
+- [Third-party notices](THIRD_PARTY_NOTICES.md): The notice about provider logos

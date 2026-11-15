@@ -598,7 +598,7 @@ class WindowDurationTests(unittest.TestCase):
         )
         self.assertEqual(seconds, 7 * 86400)
 
-    def test_month_before_reset_matches_codenotch(self):
+    def test_month_before_reset_is_one_calendar_month(self):
         seconds = c._month_seconds_before("2026-10-03T13:09:45.611Z")
         self.assertIsNotNone(seconds)
         start = dt.datetime(2026, 9, 3, 13, 9, 45, 611000, tzinfo=dt.timezone.utc)

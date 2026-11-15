@@ -14,7 +14,7 @@ final class UsageStore: ObservableObject {
     @Published var coupledTrailing = true
     @Published var settingsOpen = false
     @Published private(set) var pinned = false
-    /// Codenotch: provider sem login/assinatura sai da fila e some do HUD.
+    /// Provider sem login/assinatura sai da fila e some do HUD.
     @Published private(set) var skippedIDs: Set<String> = []
 
     private let pythonPath = "/Users/imac/Documents/subscription-widget/.venv/bin/python"
@@ -24,7 +24,7 @@ final class UsageStore: ObservableObject {
     private var screensWakeObserver: NSObjectProtocol?
     private var sessionObserver: NSObjectProtocol?
     private var loadingStartedAt: Date?
-    /// Codenotch 1.13: 60s while the HUD is in use, 5 min idle. Timer de RunLoop morria depois do sono.
+    /// 60s while the HUD is in use, 5 min idle. Timer de RunLoop morria depois do sono.
     private static let busyInterval: TimeInterval = 60
     private static let idleInterval: TimeInterval = 300
     private static let pulseEvery: TimeInterval = 15
@@ -40,7 +40,7 @@ final class UsageStore: ObservableObject {
     private var isDragging = false
     private var hoverOpenTask: Task<Void, Never>?
     private var hoverCloseTask: Task<Void, Never>?
-    /// Codenotch `hoverGrace` — abre o popout sem flicker.
+    /// Atraso do hover: abre o popout sem flicker.
     private static let hoverGraceOpen: UInt64 = 90_000_000
     private static let hoverGraceClose: UInt64 = 180_000_000
 
@@ -267,7 +267,7 @@ final class UsageStore: ObservableObject {
                 live.stale = false
                 return live
             }
-            // Codenotch 1.15: leitura boa fica; o anel só esmaece.
+            // Leitura boa fica; o anel só esmaece.
             if current.ok, current.usedPercent != nil {
                 var kept = current
                 kept.stale = true

@@ -6,11 +6,9 @@ enum NotchEdge {
 
 /// D-tab soldado no bezel. `curlRadius` 0 = cápsula cortada na direita.
 ///
-/// A família visual (scoop no bezel, pílula na borda) vem do Codenotch do Vinz,
-/// agora MIT: https://github.com/vinzdg/codenotch — `Sources/Notch/SideNotchShape.swift`.
-/// O path daqui é o da spec Sequoia (só trailing, arcos por tangente no peek).
-/// Não copiar o transform de quatro bordas nem o merge com notch de hardware
-/// sem uma ordem explícita: isso muda a casca aprovada.
+/// O path é o da spec Sequoia: só a borda direita, com arcos por tangente no peek.
+/// Outras bordas e a fusão com o notch de hardware mudam a casca aprovada:
+/// só com uma ordem explícita.
 struct SideNotchShape: Shape {
     var edge: NotchEdge = .trailing
     var joining: CGFloat = 8
