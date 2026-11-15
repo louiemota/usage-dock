@@ -3,16 +3,16 @@
 Usage Dock has two parts that share one contract. A Python script reads the usage of each provider and prints JSON. A SwiftUI app starts that script, decodes the JSON, and draws the dock.
 
 ```mermaid
-flowchart LR
+flowchart TD
+    app["UsageDock.app<br>SwiftUI overlay"]
     logins["Login files and Keychain item<br>of each provider's tool"]
     collector["collector.py<br>one run per round"]
-    app["UsageDock.app<br>SwiftUI overlay"]
     state["last-providers.json<br>and user defaults"]
     apis["Provider APIs"]
-    logins -->|read| collector
-    collector -->|"HTTPS, one provider per request"| apis
     app -->|starts| collector
     collector -->|JSON on stdout| app
+    logins -->|read| collector
+    collector -->|"HTTPS, one provider per request"| apis
     app -->|saves and restores| state
 ```
 
