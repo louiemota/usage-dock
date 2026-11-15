@@ -1,0 +1,46 @@
+name: Feature request
+description: Suggest a change or a new provider.
+title: "Feature: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [roadmap](https://github.com/louiemota/usage-dock/blob/main/README.md#roadmap) and the [known limitations](https://github.com/louiemota/usage-dock/blob/main/docs/KNOWN-LIMITATIONS.md) first. Your idea may already be listed.
+
+        Do not paste a token, an API key, or the content of a login file.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of request
+      options:
+        - New provider
+        - Change to a ring or a card
+        - Build, install, or platform
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the problem that you want to solve, before the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the change that would solve the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: provider-details
+    attributes:
+      label: Details of the new provider
+      description: Only for a new provider. Say where the provider's tool keeps its login and which request returns the usage. Name the file and the field. Do not paste the credential.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Optional. Describe other solutions that you considered.

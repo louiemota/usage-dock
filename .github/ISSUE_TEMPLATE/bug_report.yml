@@ -1,0 +1,85 @@
+name: Bug report
+description: Report a defect in the app or in the collector.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read the [known limitations](https://github.com/louiemota/usage-dock/blob/main/docs/KNOWN-LIMITATIONS.md) first. Many defects are already listed there.
+
+        Do not paste a token, an API key, or the content of a login file. To report a vulnerability, follow the [security policy](https://github.com/louiemota/usage-dock/security/policy) and do not use this form.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Describe what you saw and what you expected to see.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Write one step per line.
+      placeholder: |
+        1. Open the dock.
+        2. Hover the Codex ring.
+        3. The card shows the wrong reset time.
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      description: Select every provider that the problem affects.
+      multiple: true
+      options:
+        - Codex
+        - OpenCode
+        - Command
+        - Cursor
+        - Grok
+        - Devin
+        - Claude
+        - Not specific to a provider
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      description: Run `sw_vers -productVersion` and paste the result.
+      placeholder: "15.7"
+    validations:
+      required: true
+  - type: dropdown
+    id: processor
+    attributes:
+      label: Mac processor
+      options:
+        - Apple silicon
+        - Intel
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit
+      description: Run `git rev-parse --short HEAD` in your clone and paste the result.
+    validations:
+      required: true
+  - type: textarea
+    id: collector-output
+    attributes:
+      label: Collector output
+      description: Optional. Paste the part of the output of `USAGE_DOCK_SKIP=grok python3 collector.py` that belongs to the provider. Remove anything that you want to keep private.
+      render: json
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: This report contains no token, no API key, and no login file content.
+          required: true
+        - label: Every screenshot in this report shows only the dock.
+          required: true

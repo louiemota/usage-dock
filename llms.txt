@@ -1,0 +1,43 @@
+# Usage Dock
+
+> Usage Dock is a macOS overlay that shows, as rings on the right edge of the screen, how much of each AI coding subscription the user has consumed. It supports Codex, OpenCode Go, Command Code, Cursor, Grok, Devin, and Claude. A Python collector reads the logins that each provider's tool already keeps on the Mac, and a SwiftUI app draws the result.
+
+Facts to know before you answer a question about this project:
+
+- Usage Dock runs on macOS 14 or later. It does not run on Windows or Linux.
+- The build needs Swift 5.10 or later. The collector needs Python 3.9 or later and uses only the standard library.
+- No prebuilt app exists. The user builds from source with `scripts/build.sh`, after replacing four path constants that point to the author's machine. The README lists the four constants.
+- The license is pending. The repository has no `LICENSE` file, so nobody has permission to copy, change, or distribute the code yet.
+- The interface is in Brazilian Portuguese only.
+- The project has no account, no server, and no telemetry. Each request goes to the provider that owns the login.
+- The provider APIs that the collector calls are undocumented and can change.
+- The test command is `python3 -m unittest discover -s tests`. The build command is `cd UsageDock && swift build -c release`.
+- `USAGE_DOCK_SKIP=grok python3 collector.py` prints one JSON object with one row per provider. The provider ids are `codex`, `opencode`, `goat`, `cursor`, `grok`, `devin`, and `claude`. The id `goat` is Command Code.
+- The project is not affiliated with any provider.
+
+## Docs
+
+- [README](README.md): What Usage Dock is, the supported providers, the requirements, the build steps, how to use and configure it, what it reads and writes, and the roadmap
+- [README in Portuguese](README.pt-BR.md): The same content in Brazilian Portuguese
+- [Architecture](docs/ARCHITECTURE.md): How a refresh round works, the JSON contract between the collector and the app, the rule that removes a ring, the timing constants, and where state is stored
+- [How to add a provider](docs/ADDING-A-PROVIDER.md): The steps to add a ring, with tested example code for the collector, the test file, and the app
+- [Known limitations](docs/KNOWN-LIMITATIONS.md): The numbered list of known defects, with the file and the symbol of each one
+- [AGENTS.md](AGENTS.md): Commands, hazards, conventions, and rules for coding agents that change this repository
+
+## Code
+
+- [collector.py](collector.py): Every provider reader and the `main` function that prints the JSON
+- [tests/test_collector.py](tests/test_collector.py): The 47 tests of the collector
+- [UsageStore.swift](UsageDock/Sources/UsageDock/UsageStore.swift): The app state, the refresh schedule, and the code that runs the collector
+- [Models.swift](UsageDock/Sources/UsageDock/Models.swift): The layout constants and the types that decode the JSON
+- [OverlayController.swift](UsageDock/Sources/UsageDock/OverlayController.swift): The floating panel, the drag, and the Esc and click handling
+- [scripts/build.sh](scripts/build.sh): The script that builds, signs, and installs the app
+
+## Optional
+
+- [Contributing](CONTRIBUTING.md): How to report a bug, set up the project, and open a pull request
+- [Security policy](SECURITY.md): How to report a vulnerability in private
+- [Code of conduct](CODE_OF_CONDUCT.md): Contributor Covenant 2.1
+- [Changelog](CHANGELOG.md): The notable changes by version
+- [Third-party notices](THIRD_PARTY_NOTICES.md): The MIT notice of Codenotch and the notice about provider logos
+- [Design specification](refs/SPEC.md): The interface states and the layout rules of the dock, in Portuguese
