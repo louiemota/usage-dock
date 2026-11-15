@@ -29,7 +29,7 @@ The split has two effects. The tests exercise the provider logic without the app
 ├── SECURITY.md                  How to report a vulnerability
 ├── CHANGELOG.md                 Notable changes
 ├── LICENSE                      The MIT License
-├── THIRD_PARTY_NOTICES.md       Notices for Codenotch, the logos, and the reference media
+├── THIRD_PARTY_NOTICES.md       Notices for Codenotch and the logos
 ├── collector.py                 The collector. One file, standard library only
 ├── tests/test_collector.py      47 tests for the collector. No network, no real credentials
 ├── scripts/build.sh             Builds, assembles, signs, and installs UsageDock.app
@@ -52,7 +52,7 @@ The split has two effects. The tests exercise the provider logic without the app
 │       ├── LogoAssets.swift         The Codex logo, embedded as a PNG
 │       └── Resources/               One SVG logo for each of the other six providers
 ├── docs/                        This page, the provider guide, the known limitations, the screenshot
-├── refs/                        Design specification and notes, in Portuguese
+├── refs/SPEC.md                 Design specification, in Portuguese
 └── .github/                     Issue forms and the pull request template
 ```
 

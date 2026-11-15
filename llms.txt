@@ -7,7 +7,7 @@ Facts to know before you answer a question about this project:
 - Usage Dock runs on macOS 14 or later. It does not run on Windows or Linux.
 - The build needs Swift 5.10 or later. The collector needs Python 3.9 or later and uses only the standard library.
 - No prebuilt app exists. The user builds from source with `scripts/build.sh`, after replacing four path constants that point to the author's machine. The README lists the four constants.
-- The license is MIT. It covers the code and the documentation of the project. It does not cover the provider logos or the reference media in `refs/`.
+- The license is MIT. It covers the code and the documentation of the project. It does not cover the provider logos.
 - The interface is in Brazilian Portuguese only.
 - The project has no account, no server, and no telemetry. Each request goes to the provider that owns the login.
 - The provider APIs that the collector calls are undocumented and can change.
@@ -40,5 +40,5 @@ Facts to know before you answer a question about this project:
 - [Code of conduct](CODE_OF_CONDUCT.md): Contributor Covenant 2.1
 - [Changelog](CHANGELOG.md): The notable changes by version
 - [License](LICENSE): The MIT License of Usage Dock
-- [Third-party notices](THIRD_PARTY_NOTICES.md): The MIT notice of Codenotch and the notices about provider logos and reference media
+- [Third-party notices](THIRD_PARTY_NOTICES.md): The MIT notice of Codenotch and the notice about provider logos
 - [Design specification](refs/SPEC.md): The interface states and the layout rules of the dock, in Portuguese

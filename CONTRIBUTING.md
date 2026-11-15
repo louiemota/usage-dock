@@ -1,6 +1,6 @@
 # Contributing to Usage Dock
 
-Usage Dock is a personal tool that is being prepared for open source. This guide explains how to report a problem, how to set up the project, and what a pull request needs.
+Usage Dock is a personal tool that its author shares as it is. This guide explains how to report a problem, how to set up the project, and what a pull request needs.
 
 Everyone who takes part follows the [code of conduct](CODE_OF_CONDUCT.md). To report a conduct problem, use the private report form that the code of conduct names, and start the report with the words "Code of conduct". Only the maintainer can read a report sent through that form.
 

@@ -11,7 +11,7 @@ Usage Dock is a macOS overlay that shows how much of each AI coding subscription
 
 The provider ids are `codex`, `opencode`, `goat`, `cursor`, `grok`, `devin`, and `claude`. The id `goat` is Command Code.
 
-The project is a personal tool in preparation for open source, under the MIT License. It has no release and no CI.
+The project is a personal tool, open source under the MIT License. It has no release and no CI.
 
 ## Where things are
 

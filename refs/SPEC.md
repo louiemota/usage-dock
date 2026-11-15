@@ -4,16 +4,7 @@ Isto é o alvo. Não é o hivinz pixel a pixel. É a mesma família, nos nossos 
 
 Revisão 01/09: o texto abaixo foi alinhado ao que está aprovado no ar. Onde a versão de 31/08 se contradizia (vibrancy vs sólida, gap vs track cheia, % branca vs cor da banda, gear no poço vs na coluna), vale o que está escrito agora.
 
-Referência de família, não de clone:
-- `refs/hivinz-side-notch.mp4` (21s)
-- `refs/hivinz-side-notch.jpg`
-- `refs/hivinz-hover-popout.jpg`
-- `refs/frames/t00-peek.jpg` peek
-- `refs/frames/t05-idle.jpg` idle + hover card
-- `refs/frames/t08-hover.jpg` pílula + gear pendurada
-- `refs/frames/t19-gear.jpg` gear no poço, fora da coluna de anéis
-
-Não editar esses arquivos. Um diff visual contra eles mede família (forma, ritmo, hover), não igualdade de marca ou de 3 anéis.
+Referência de família, não de clone: o vídeo público do side notch do Vinz, o designer do Codenotch. A mídia dele não fica neste repositório. Uma comparação visual com ela mede família (forma, ritmo, hover), não igualdade de marca ou de 3 anéis.
 
 ## O que o nosso dock é
 
@@ -55,9 +46,9 @@ Valores atuais (v38): pílula 66, scoop 20, anel 44, linha 62, spacing 12, top p
 
 ## Como prova
 
-1. Relançar só `/Users/imac/Documents/usage-dock/UsageDock.app`. Matar qualquer `UsageDock` em `/Users/imac/Applications`.
+1. Relançar só o `UsageDock.app` do checkout. Matar qualquer `UsageDock` instalado em outro lugar.
 2. `scripts/capture-dock.sh idle` e o mesmo para `hover`, `peek`, `gear`.
-3. Comparar a faixa direita com `refs/frames/`. O anel, o scoop, o card e o poço da gear têm de ser da mesma família. Marca e quantidade de anéis são nossos.
+3. Comparar a faixa direita com a referência. O anel, o scoop, o card e o poço da gear têm de ser da mesma família. Marca e quantidade de anéis são nossos.
 
 ## Proibido até o diff fechar
 
@@ -76,4 +67,4 @@ Valores atuais (v38): pílula 66, scoop 20, anel 44, linha 62, spacing 12, top p
 - Traço do anel precisa de inset `ringWidth/2`. Stroke na borda do frame de 42 pt some a trilha em 0%.
 - Codex é PNG escuro. A receita que não vira quadrado é invert → `luminanceToAlpha` → invert → `colorMultiply`. Invert sozinho no SVG branco vira blob.
 - `scoopPad` entra na altura da shell e no `place` do `OverlayController`. Padding SwiftUI extra em cima disso come o scoop ou desloca a pílula.
-- O binário vivo costuma ser `/Users/imac/Applications/UsageDock.app`. Relançar o de `Documents` depois de matar o outro.
+- O binário vivo costuma ser o instalado em `~/Applications/UsageDock.app`. Relançar o do checkout depois de matar o outro.
